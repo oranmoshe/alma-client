@@ -26,7 +26,7 @@ Please read https://github.com/akveo/ngx-admin/blob/master/CONTRIBUTING.md befor
 <!-- 
 If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means:
 
-A sample application via GitHub
+Syndicator sample application via GitHub
 
 StackBlitz (https://stackblitz.com)
 

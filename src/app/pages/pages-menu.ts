@@ -2,6 +2,12 @@ import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
+    title: 'Portfolio',
+    icon: { icon: 'facebook', pack: 'social-networks'},
+    link: '/pages/portfolio/portfolio',
+    home: true,
+  },
+  {
     title: 'E-commerce',
     icon: 'shopping-cart-outline',
     link: '/pages/dashboard',

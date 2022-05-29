@@ -1,0 +1,7 @@
+{
+  "API": {
+    "SYNDICATOR": "/api/syndicator/:syndicatorId",
+    "PORTFOLIO_LIST": "/api/syndicators/:syndicatorId/portfolio/list"
+  },
+  "MAX_INTEGER": 2147483647
+}
