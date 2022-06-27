@@ -4,6 +4,12 @@ import {PortfolioInterface} from '../interfaces/portfolio-interface';
 export class Portfolio implements PortfolioInterface {
   id: Number;
   name: String;
+  offeringName: string;
+  customerName: string;
+  amount: string;
+  creationDate: string;
+  priority: string;
+  status: string;
   form: FormGroup;
   constructor(portfolio?: Portfolio | PortfolioInterface) {
     if (portfolio) {

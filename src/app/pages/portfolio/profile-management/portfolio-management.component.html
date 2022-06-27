@@ -1,12 +1,14 @@
+<nb-card>
+  <nb-card-body>
+    <nb-icon class="grid-ruler-tool" icon="list-outline" pack="eva" (click)="changeShowType('list')"></nb-icon>
+    <nb-icon class="grid-ruler-tool" icon="grid-outline" pack="eva" (click)="changeShowType('grid')"></nb-icon>
+  </nb-card-body>
+</nb-card>
 
-wfewf
 <nb-card>
   <nb-card-body>
 
-    <label class="search-label" for="search">Search:</label>
-    <input nbInput [nbFilterInput]="dataSource" id="search" class="search-input">
-
-    <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)">
+    <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)" *ngIf="showType=='list'">
 
       <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns"></tr>
       <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns"></tr>
@@ -31,6 +33,19 @@ wfewf
       </ng-container>
 
     </table>
+
+    <div *ngIf="showType=='grid'">
+      <div class="row show-grid">
+        <div class="col-md-3" *ngFor="let item of  getPortfolioList()">
+          <div class="portfolio-gallery-item">
+            <div></div>
+            <div>
+              {{ item.name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </nb-card-body>
 </nb-card>

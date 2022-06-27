@@ -1,4 +1,10 @@
 export interface PortfolioInterface {
   id: Number;
-  name: String;
+  name: string;
+  offeringName: string;
+  customerName: string;
+  amount: string;
+  creationDate: string;
+  priority: string;
+  status: string;
 }
