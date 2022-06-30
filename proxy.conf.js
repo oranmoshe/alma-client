@@ -6,7 +6,7 @@ module.exports = [
       "/logout",
       "/registration"
     ],
-    target: "https://alma-app-server.herokuapp.com",
+    target: "http://localhost:8080",
     secure: false
   }
 ];

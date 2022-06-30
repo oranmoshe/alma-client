@@ -5,4 +5,5 @@
  */
 export const environment = {
   production: true,
+  apiUrl: 'https://alma-app-server.herokuapp.com',
 };
