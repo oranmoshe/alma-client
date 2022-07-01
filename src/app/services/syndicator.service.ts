@@ -55,6 +55,7 @@ export class SyndicatorService {
   }
 
   public getCurrentPortfolioList(pageSize: number, page: number, searchQuery?: string) {
+    alert(localStorage.getItem('syndicatorId'));
     return this.getPortfolioList(localStorage.getItem('syndicatorId'), pageSize, page, searchQuery);
   }
 
