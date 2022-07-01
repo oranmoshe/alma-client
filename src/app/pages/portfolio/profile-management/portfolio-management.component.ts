@@ -56,8 +56,6 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
     this.searchSubscription = this.syndicatorService.getCurrentPortfolioList(this.pageSize, this.pageIndex, null)
       .subscribe(() => {
         this.isPending = false;
-        // if (portfoliosList && portfoliosList.length > 0)
-        //   portfoliosList = portfoliosList.filter(portfolio => portfolio.activated);
         this.initializeDataSource();
       });
   }
@@ -69,7 +67,10 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
   }
 
   getPortfolioList(): PortfolioList[] {
-    return this.syndicatorService.portfoliosList;
+    let portfoliosList = this.syndicatorService.portfoliosList;
+    if (portfoliosList && portfoliosList.length > 0)
+      portfoliosList = portfoliosList.filter(portfolio => portfolio.status !== 'deactivate');
+    return portfoliosList;
   }
 
   private initializeDataSource(): void {
