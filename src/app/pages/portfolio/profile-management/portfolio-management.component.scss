@@ -15,23 +15,41 @@
   }
 
   .portfolio-gallery-item {
-    background-color: #e0e1e5;
+    background-color: #f1f1f1;
     overflow: auto;
+    display: flex;
+    height: 70px;
   }
-  .portfolio-gallery-item:after {
-    clear: both;
-    content: '';
-  }
-  .portfolio-gallery-item div:nth-child(1) {
-    float: left;
+
+  .portfolio-gallery-item-image {
     width: 100px;
-    height: 100px;
+    height: 70px;
     background-image: url('https://www.century21.co.il/assets/new/pics/asset1.jpg');
     background-size: cover;
     background-position: center;
   }
-  .portfolio-gallery-item div:nth-child(2) {
-    float: right;
+  .portfolio-gallery-item-info {
+    flex-grow: 1;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  .portfolio-gallery-item-info h2 {
+    font-size: 17px;
+    padding: 0px;
+    margin: 0px;
+    line-height: 17px;
+    position: absolute;
+    bottom: 25px;
+    font-weight: normal;
+  }
+  .portfolio-gallery-item-info h3 {
+    font-size: 13px;
+    line-height: 13px;
+    padding: 0px;
+    margin: 0px;
+    position: absolute;
+    bottom: 5px;
+    font-weight: lighter;
   }
   button[nbTreeGridRowToggle] {
     background: transparent;

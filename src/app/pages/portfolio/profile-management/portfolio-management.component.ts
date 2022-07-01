@@ -33,6 +33,8 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
   customColumn = 'name';
   defaultColumns = [ 'offeringName', 'customerName', 'amount', 'creationDate', 'priority', 'status' ];
   allColumns = [ this.customColumn, ...this.defaultColumns ];
+  allColumnsHeaders = {'name': 'Name', 'offeringName': 'Offering Name', 'customerName': 'Customer Name',
+    'amount': 'Amount', 'creationDate': 'Creation Date', 'priority': 'Priority', 'status': 'Status'};
 
   dataSource: NbTreeGridDataSource<FSEntry>;
 
@@ -41,23 +43,29 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
 
   isPending: boolean;
   public pageIndex: number = 0;
+  public pageSize: number = 10;
   private searchSubscription: Subscription;
   public showType: string = 'list';
 
   constructor(private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>,
               private syndicatorService: SyndicatorService) {
-    //  this.dataSource = this.dataSourceBuilder.create(this.data);
   }
 
   ngOnInit() {
     this.isPending = true;
-    this.searchSubscription = this.syndicatorService.getPortfolioList(6, this.pageIndex, null)
+    this.searchSubscription = this.syndicatorService.getCurrentPortfolioList(this.pageSize, this.pageIndex, null)
       .subscribe(() => {
         this.isPending = false;
         // if (portfoliosList && portfoliosList.length > 0)
         //   portfoliosList = portfoliosList.filter(portfolio => portfolio.activated);
         this.initializeDataSource();
       });
+  }
+
+  getHeader(columnName: string): string {
+    if (this.allColumnsHeaders[columnName])
+      return this.allColumnsHeaders[columnName];
+    return '';
   }
 
   getPortfolioList(): PortfolioList[] {
@@ -138,7 +146,7 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
     <nb-tree-grid-row-toggle [expanded]="expanded" *ngIf="isDir(); else fileIcon">
     </nb-tree-grid-row-toggle>
     <ng-template #fileIcon>
-      <nb-icon icon="file-text-outline"></nb-icon>
+<!--      <nb-icon icon="home"></nb-icon>-->
     </ng-template>
   `,
 })

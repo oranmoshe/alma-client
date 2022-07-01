@@ -15,7 +15,7 @@
 
       <ng-container [nbTreeGridColumnDef]="customColumn">
         <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(customColumn)" *nbTreeGridHeaderCellDef>
-          {{customColumn}}
+          {{getHeader(customColumn)}}
         </th>
         <td nbTreeGridCell *nbTreeGridCellDef="let row">
           <ngx-fs-icon [kind]="row.data.kind" [expanded]="row.expanded"></ngx-fs-icon>
@@ -27,7 +27,7 @@
                     [nbTreeGridColumnDef]="column"
                     [showOn]="getShowOn(index)">
         <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
-          {{column}}
+          {{getHeader(column)}}
         </th>
         <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || '-'}}</td>
       </ng-container>
@@ -38,9 +38,17 @@
       <div class="row show-grid">
         <div class="col-md-3" *ngFor="let item of  getPortfolioList()">
           <div class="portfolio-gallery-item">
-            <div></div>
-            <div>
-              {{ item.name }}
+            <div class="portfolio-gallery-item-image"></div>
+            <div class="portfolio-gallery-item-info">
+              <h2>
+                {{ item.name }}
+              </h2>
+              <h3>
+                {{ item.offeringName }}
+                <span>
+                {{ item.amount }}
+                </span>
+              </h3>
             </div>
           </div>
         </div>
