@@ -52,6 +52,8 @@ import { StatsProgressBarService } from './mock/stats-progress-bar.service';
 import { VisitorsAnalyticsService } from './mock/visitors-analytics.service';
 import { SecurityCamerasService } from './mock/security-cameras.service';
 import { MockDataModule } from './mock/mock-data.module';
+import {APIService} from '../services/api-service.service';
+import {GlobalErrorHandler} from '../services/basic-error-handler';
 
 const socialLinks = [
   {
@@ -143,6 +145,8 @@ export const NB_CORE_PROVIDERS = [
   PlayerService,
   SeoService,
   StateService,
+  APIService,
+  GlobalErrorHandler,
 ];
 
 @NgModule({

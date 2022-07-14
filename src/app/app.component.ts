@@ -14,7 +14,6 @@ import { SeoService } from './@core/utils/seo.service';
 export class AppComponent implements OnInit {
 
   constructor(private analytics: AnalyticsService, private seoService: SeoService) {
-    localStorage.setItem('syndicatorId', '1');
   }
 
   ngOnInit(): void {
