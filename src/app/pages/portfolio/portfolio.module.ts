@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
   NbButtonModule,
-  NbCardModule,
+  NbCardModule, NbDialogService,
   NbIconModule,
   NbInputModule,
   NbTreeGridModule,
@@ -30,6 +30,7 @@ const MODULES = [
 ];
 
 const SERVICES = [
+  NbDialogService,
 ];
 
 @NgModule({

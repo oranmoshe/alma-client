@@ -1,8 +1,7 @@
-import {Component, Input} from '@angular/core';
-import { NbWindowRef } from '@nebular/theme';
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import { NB_WINDOW_CONTEXT, NbWindowRef} from '@nebular/theme';
 import {Portfolio} from '../../../../classes/portfolio';
-import {APIService} from '../../../../services/api-service.service';
-import {SyndicatorService} from "../../../../services/syndicator.service";
+import {SyndicatorService} from '../../../../services/syndicator.service';
 
 @Component({
   template: `
@@ -24,24 +23,37 @@ import {SyndicatorService} from "../../../../services/syndicator.service";
   `,
   styleUrls: ['window-form-portfolio.component.scss'],
 })
-export class WindowFormPortfolioComponent {
+export class WindowFormPortfolioComponent implements OnInit {
 
-  @Input()
   public portfolio: Portfolio = new Portfolio();
-
+  public id: String;
   constructor(public windowRef: NbWindowRef,
-              public syndicatorService: SyndicatorService) {}
+              public syndicatorService: SyndicatorService,
+              @Inject(NB_WINDOW_CONTEXT) context) {
+    this.portfolio = context ? new Portfolio(context) : new Portfolio();
+  }
+
+  ngOnInit() {
+
+  }
 
   close() {
     this.windowRef.close();
   }
 
   onSubmit() {
-    this.portfolio.form.get('creationDate').setValue((new Date).getTime().toString());
-    this.syndicatorService.createPortfolio(1, this.portfolio.form.value)
-      .subscribe(res => {
-        this.close();
-      });
+    if (this.portfolio.id) {
+      this.syndicatorService.updatePortfolio(1, this.portfolio.form.value)
+        .subscribe(res => {
+          this.close();
+        });
+    } else {
+      this.portfolio.form.get('creationDate').setValue((new Date).getTime().toString());
+      this.syndicatorService.createPortfolio(1, this.portfolio.form.value)
+        .subscribe(res => {
+          this.close();
+        });
+    }
   }
 
 }

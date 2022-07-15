@@ -9,9 +9,17 @@
 
   }
 
+  #createPortfolio{
+    position: absolute;
+    right: 20px;
+  }
+
   .grid-ruler-tool {
     border: 1px solid silver;
     border-radius: 2px;
+    margin: 2px;
+    height: 25px;
+    width: 25px;
   }
 
   .portfolio-gallery-item {

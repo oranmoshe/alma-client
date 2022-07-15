@@ -1,5 +1,6 @@
 import {Component, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {
+  NbDialogService,
   NbSortDirection,
   NbSortRequest,
   NbTreeGridDataSource,
@@ -12,6 +13,9 @@ import {PortfolioList} from '../../../classes/portfolio-list';
 import {WindowFormPortfolioComponent} from './window-form-add-portfolio/window-form-portfolio.component';
 import EventEmitter from 'events';
 import {GlobalErrorHandler} from '../../../services/basic-error-handler';
+import {Portfolio} from '../../../classes/portfolio';
+import {DialogNamePromptComponent} from "../../modal-overlays/dialog/dialog-name-prompt/dialog-name-prompt.component";
+import {DialogAgreementPromptComponent} from "../../modal-overlays/dialog/dialog-agreement/dialog-agreement.component";
 
 
 interface TreeNode<T> {
@@ -40,9 +44,11 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
   @Output() createWindowChange = new EventEmitter();
   customColumn = 'name';
   defaultColumns = [ 'offeringName', 'customerName', 'amount', 'creationDate', 'priority', 'status' ];
-  allColumns = [ this.customColumn, ...this.defaultColumns ];
+  defaultColumns2 = [ 'actions' ];
+  allColumns = [ this.customColumn, ...this.defaultColumns, ...this.defaultColumns2 ];
   allColumnsHeaders = {'name': 'Name', 'offeringName': 'Offering Name', 'customerName': 'Customer Name',
-    'amount': 'Amount', 'creationDate': 'Creation Date', 'priority': 'Priority', 'status': 'Status'};
+    'amount': 'Amount', 'creationDate': 'Creation Date', 'priority': 'Priority', 'status': 'Status',
+    'actions': ''};
 
   dataSource: NbTreeGridDataSource<FSEntry>;
   sortColumn: string;
@@ -53,12 +59,14 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
   public pageSize: number = 10;
   private searchSubscription: Subscription;
   public showType: string = 'list';
+  private syndicatorId: number = 1;
   private handleError: Function;
 
   constructor(private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>,
               private syndicatorService: SyndicatorService,
               private windowService: NbWindowService,
-              private globalErrorHandler: GlobalErrorHandler) {
+              private globalErrorHandler: GlobalErrorHandler,
+              private dialogService: NbDialogService) {
     this.handleError = this.globalErrorHandler.handleError;
   }
 
@@ -92,7 +100,7 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
     const ssss: TreeNode<FSEntry>[] =  this.getPortfolioList().map(s => (
       {
         data: {id: s.id, name: s.name, offeringName: s.offeringName, customerName: s.customerName, amount: s.amount,
-          creationDate: s.creationDate, priority: s.priority, status: s.status },
+          creationDate: s.creationDate, priority: s.priority, status: s.status},
         children: [
 
         ],
@@ -125,8 +133,16 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
     this.showType = showType;
   }
 
-  openPortfolioWindow(): void {
-    const windowRef = this.windowService.open(WindowFormPortfolioComponent, { title: `Window` });
+  openPortfolioWindow(id): void {
+    if (id)
+      this.syndicatorService.getPortfolio(this.syndicatorId, id).subscribe((portfolio: Portfolio) =>
+        this.openPortfolioWindowWithPortfolio(portfolio));
+    else
+      this.openPortfolioWindowWithPortfolio(null);
+
+  }
+  openPortfolioWindowWithPortfolio(portfolio: Portfolio) {
+    const windowRef = this.windowService.open(WindowFormPortfolioComponent, { title: `Window`, context: portfolio });
     windowRef.onClose.subscribe(() => this.refreshData());
   }
 
@@ -160,6 +176,20 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
     const minWithForMultipleColumns = 400;
     const nextColumnStep = 100;
     return minWithForMultipleColumns + (nextColumnStep * index);
+  }
+
+  delete(portfolioId: number) {
+    this.dialogService.open(DialogAgreementPromptComponent)
+      .onClose.subscribe(agree => {
+        if (agree) {
+          this.syndicatorService.deletePortfolio(this.syndicatorId, portfolioId)
+            .subscribe(res => {
+              this.refreshData();
+            });
+        }
+    });
+
+
   }
 }
 
