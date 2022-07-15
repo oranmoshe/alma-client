@@ -3,7 +3,7 @@ import {PortfolioInterface} from '../interfaces/portfolio-interface';
 
 export class Portfolio implements PortfolioInterface {
   id: Number;
-  name: String;
+  name: string;
   offeringName: string;
   customerName: string;
   amount: string;
@@ -20,7 +20,14 @@ export class Portfolio implements PortfolioInterface {
   initForm() {
     const formBuilder = new FormBuilder();
     const formSettings = {
+      id: [this.id || '', []],
       name: [this.name || '', [Validators.required]],
+      offeringName: [this.offeringName || '', [Validators.required]],
+      customerName: [this.customerName || '', [Validators.required]],
+      amount: [this.amount || '', [Validators.required]],
+      creationDate: [this.creationDate || '', [Validators.required]],
+      priority: [this.priority || '', [Validators.required]],
+      status: [this.status || '', [Validators.required]],
     };
     this.form = formBuilder.group(formSettings);
   }

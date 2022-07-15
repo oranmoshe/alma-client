@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {PortfolioComponent} from './portfolio.component';
 import { PortfolioManagementComponent } from './profile-management/portfolio-management.component';
+import {
+  WindowFormPortfolioComponent,
+} from './profile-management/window-form-add-portfolio/window-form-portfolio.component';
 
 
 
@@ -26,4 +29,5 @@ export class PortfolioRoutingModule { }
 export const routedComponents = [
   PortfolioComponent,
   PortfolioManagementComponent,
+  WindowFormPortfolioComponent,
 ];
