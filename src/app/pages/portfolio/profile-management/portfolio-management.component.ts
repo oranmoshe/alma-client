@@ -1,11 +1,17 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import { NbSortDirection, NbSortRequest, NbTreeGridDataSource, NbTreeGridDataSourceBuilder } from '@nebular/theme';
+import {Component, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  NbSortDirection,
+  NbSortRequest,
+  NbTreeGridDataSource,
+  NbTreeGridDataSourceBuilder,
+  NbWindowService,
+} from '@nebular/theme';
 import {Subscription} from 'rxjs';
 import {SyndicatorService} from '../../../services/syndicator.service';
-
-import {PortfolioListInterface} from '../../../interfaces/portfolio-list-interface';
 import {PortfolioList} from '../../../classes/portfolio-list';
-import * as constants from '../../../../../constants.json';
+import {WindowFormPortfolioComponent} from './window-form-add-portfolio/window-form-portfolio.component';
+import EventEmitter from 'events';
+import {GlobalErrorHandler} from '../../../services/basic-error-handler';
 
 
 interface TreeNode<T> {
@@ -30,6 +36,8 @@ interface FSEntry {
   styleUrls: ['./portfolio-management.component.scss'],
 })
 export class PortfolioManagementComponent implements OnInit, OnDestroy {
+
+  @Output() createWindowChange = new EventEmitter();
   customColumn = 'name';
   defaultColumns = [ 'offeringName', 'customerName', 'amount', 'creationDate', 'priority', 'status' ];
   allColumns = [ this.customColumn, ...this.defaultColumns ];
@@ -37,7 +45,6 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
     'amount': 'Amount', 'creationDate': 'Creation Date', 'priority': 'Priority', 'status': 'Status'};
 
   dataSource: NbTreeGridDataSource<FSEntry>;
-
   sortColumn: string;
   sortDirection: NbSortDirection = NbSortDirection.NONE;
 
@@ -46,12 +53,20 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
   public pageSize: number = 10;
   private searchSubscription: Subscription;
   public showType: string = 'list';
+  private handleError: Function;
 
   constructor(private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>,
-              private syndicatorService: SyndicatorService) {
+              private syndicatorService: SyndicatorService,
+              private windowService: NbWindowService,
+              private globalErrorHandler: GlobalErrorHandler) {
+    this.handleError = this.globalErrorHandler.handleError;
   }
 
   ngOnInit() {
+    this.refreshData();
+  }
+
+  refreshData() {
     this.isPending = true;
     this.searchSubscription = this.syndicatorService.getCurrentPortfolioList(this.pageSize, this.pageIndex, null)
       .subscribe(() => {
@@ -76,7 +91,7 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
   private initializeDataSource(): void {
     const ssss: TreeNode<FSEntry>[] =  this.getPortfolioList().map(s => (
       {
-        data: { name: s.name, offeringName: s.offeringName, customerName: s.customerName, amount: s.amount,
+        data: {id: s.id, name: s.name, offeringName: s.offeringName, customerName: s.customerName, amount: s.amount,
           creationDate: s.creationDate, priority: s.priority, status: s.status },
         children: [
 
@@ -84,6 +99,8 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
       }
     )); // no error
     this.dataSource = this.dataSourceBuilder.create(ssss);
+    const awww = { column: 'id', direction: 'desc' } as NbSortRequest;
+    this.dataSource.sort(awww);
   }
 
   ngOnDestroy() {
@@ -106,6 +123,11 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
 
   changeShowType(showType: string) {
     this.showType = showType;
+  }
+
+  openPortfolioWindow(): void {
+    const windowRef = this.windowService.open(WindowFormPortfolioComponent, { title: `Window` });
+    windowRef.onClose.subscribe(() => this.refreshData());
   }
 
   // private data: TreeNode<FSEntry>[] = [
