@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import {APIService} from './api-service.service';
 import {Observable, forkJoin, of, BehaviorSubject} from 'rxjs';
-import {PORTFOLIO_LIST, SYNDICATOR, PORTFOLIO_CREATE} from './api.endpoints.constants';
+import {
+  PORTFOLIO_LIST,
+  SYNDICATOR,
+  PORTFOLIO_CREATE,
+  PORTFOLIO_DELETE,
+  PORTFOLIO,
+  PORTFOLIO_UPDATE
+} from './api.endpoints.constants';
 import { map } from 'rxjs/operators';
 import {Syndicator} from '../classes/syndicator';
 import {SyndicatorInterface} from '../interfaces/syndicator-interface';
@@ -10,7 +17,7 @@ import {TableDataInterface} from '../interfaces/table-data';
 import {PortfolioListInterface} from '../interfaces/portfolio-list-interface';
 import { catchError } from 'rxjs/operators';
 import {Portfolio} from '../classes/portfolio';
-import {GlobalErrorHandler} from "./basic-error-handler";
+import {GlobalErrorHandler} from './basic-error-handler';
 
 
 @Injectable()
@@ -87,4 +94,29 @@ export class SyndicatorService {
       .pipe(this.handleError());
   }
 
+  deletePortfolio(syndicatorId: number, portfolioId: number) {
+    return this.apiService.delete(PORTFOLIO_DELETE.replace(':syndicatorId', syndicatorId.toString())
+      .replace(':portfolioId', portfolioId.toString()))
+      .pipe(map((result) => {
+        return result;
+      }))
+      .pipe(this.handleError());
+  }
+
+  getPortfolio(syndicatorId: number, portfolioId: number) {
+    return this.apiService.fetch(PORTFOLIO.replace(':syndicatorId', syndicatorId.toString())
+      .replace(':portfolioId', portfolioId.toString()))
+      .pipe(map((result) => {
+        return result;
+      }))
+      .pipe(this.handleError());
+  }
+
+  updatePortfolio(syndicatorId: number, portfolio: Portfolio) {
+    return this.apiService.put(PORTFOLIO_UPDATE.replace(':syndicatorId', syndicatorId.toString()), portfolio)
+      .pipe(map((result) => {
+        return result;
+      }))
+      .pipe(this.handleError());
+  }
 }

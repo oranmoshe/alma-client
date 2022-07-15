@@ -3,8 +3,11 @@
     "USER": "/api/users/:userId",
     "CURRENT_USER": "/api/users/current",
     "SYNDICATOR": "/api/syndicators/:syndicatorId",
+    "PORTFOLIO": "/api/syndicators/:syndicatorId/portfolio/:portfolioId",
     "PORTFOLIO_LIST": "/api/syndicators/:syndicatorId/portfolio/list",
-    "PORTFOLIO_CREATE": "/api/syndicators/:syndicatorId/portfolio"
+    "PORTFOLIO_CREATE": "/api/syndicators/:syndicatorId/portfolio",
+    "PORTFOLIO_DELETE": "/api/syndicators/:syndicatorId/portfolio/:portfolioId",
+    "PORTFOLIO_UPDATE": "/api/syndicators/:syndicatorId/portfolio"
   },
   "MAX_INTEGER": 2147483647
 }

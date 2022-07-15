@@ -31,6 +31,7 @@ import {
   NgxPopoverTabsComponent,
 } from './popovers/popover-examples.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
+import {DialogAgreementPromptComponent} from './dialog/dialog-agreement/dialog-agreement.component';
 
 
 const COMPONENTS = [
@@ -39,6 +40,7 @@ const COMPONENTS = [
   DialogComponent,
   ShowcaseDialogComponent,
   DialogNamePromptComponent,
+  DialogAgreementPromptComponent,
   WindowComponent,
   WindowFormComponent,
   PopoversComponent,
