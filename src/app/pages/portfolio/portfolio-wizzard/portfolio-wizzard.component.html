@@ -1,0 +1,105 @@
+<nb-card size="medium">
+  <nb-card-body>
+    <nb-stepper orientation="vertical">
+      <nb-step label="First step">
+        <h4>Basic information #1</h4>
+         <div class="input-group wizard-form">
+          <form class="form" [formGroup]="portfolioForm" (ngSubmit)="onSubmitStep1()">
+            <div>
+              <label class="text-label" for="name">Name</label>
+              <input nbInput id="name" type="text" formControlName="name">
+            </div>
+            <div>
+              <label class="text-label" for="offeringName">Offering Name</label>
+              <input nbInput id="offeringName" type="text" formControlName="offeringName">
+            </div>
+            <div>
+              <label class="text-label" for="customerName">Customer Name</label>
+              <input nbInput id="customerName" type="text" formControlName="customerName">
+            </div>
+            <div>
+              <label class="text-label" for="amount">Amount</label>
+              <input nbInput id="amount" type="text" formControlName="amount">
+            </div>
+            <div>
+              <label class="text-label" for="priority">Priority</label>
+              <input nbInput id="priority" type="text" formControlName="priority">
+            </div>
+            <div>
+              <label class="text-label" for="status">Status</label>
+              <input nbInput id="status" type="text" formControlName="status">
+            </div>
+            <div>
+              <label class="text-label" for="location">Location</label>
+              <input nbInput id="location" type="text" formControlName="location">
+            </div>
+          </form>
+         </div>
+        <button nbButton disabled nbStepperNext>prev</button>
+        <button nbButton nbStepperNext (click)="onSubmitStep1()">next</button>
+        <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
+      </nb-step>
+      <nb-step label="Second step">
+        <h4>Step content #2</h4>
+
+        <form [formGroup]="portfolio.form">
+          <ng-container formArrayName="uploadedFiles">
+            <ng-container *ngFor="let uploadedForm of uploadedFilesForm.controls; let index = index">
+              <div [formGroupName]="index">
+                <button nbButton shape="round" size="small" (click)="delete(getUploadedFilesFormItem(index).id)">delete</button>
+                <img [src]="downloadFile(getUploadedFilesFormItem(index).id)">
+              </div>
+            </ng-container>
+          </ng-container>
+          <button class="btn btn-primary">send</button>
+        </form>
+
+        <form class="form">
+          <label for="formFile" class="form-label">Upload file example</label>
+          <input type="file"
+                   id="formFile"
+                   multiple
+                   (change)="handleFileInput($any($event).target.files)">
+          <button nbButton status="primary" (click)="onUpload()">upload</button>
+
+        </form>
+
+
+        <button nbButton nbStepperPrevious>prev</button>
+        <button nbButton nbStepperNext>next</button>
+      </nb-step>
+      <nb-step label="Third step">
+        <h4>Step content #3</h4>
+        <p class="lorem">
+          Proin varius accumsan semper. Praesent consequat tincidunt sagittis. Curabitur egestas sem a ipsum bibendum,
+          sit amet fringilla orci efficitur. Nam bibendum lectus ut viverra tristique. Fusce eu pulvinar magna, quis
+          viverra ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent metus turpis, commodo vel
+          placerat quis, lobortis in ligula.
+        </p>
+        <p class="lorem">
+          Curabitur luctus mattis risus nec condimentum. Donec at dui turpis. Sed vehicula fringilla rutrum. Nullam
+          sed ornare magna. Mauris vitae laoreet diam. Mauris fermentum ligula at lacinia semper. Nulla placerat dui
+          eu sapien pellentesque, eu placerat leo luctus. Cras pharetra blandit fermentum.
+        </p>
+        <button nbButton nbStepperPrevious>prev</button>
+        <button nbButton nbStepperNext>next</button>
+      </nb-step>
+      <nb-step label="Fourth step">
+        <h4>Step content #4</h4>
+        <p class="lorem">
+          Proin varius accumsan semper. Praesent consequat tincidunt sagittis. Curabitur egestas sem a ipsum bibendum,
+          sit amet fringilla orci efficitur. Nam bibendum lectus ut viverra tristique. Fusce eu pulvinar magna, quis
+          viverra ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent metus turpis, commodo vel
+          placerat quis, lobortis in ligula.
+        </p>
+        <p class="lorem">
+          Curabitur luctus mattis risus nec condimentum. Donec at dui turpis. Sed vehicula fringilla rutrum. Nullam
+          sed ornare magna. Mauris vitae laoreet diam. Mauris fermentum ligula at lacinia semper. Nulla placerat dui
+          eu sapien pellentesque, eu placerat leo luctus. Cras pharetra blandit fermentum.
+        </p>
+        <button nbButton nbStepperPrevious>prev</button>
+        <button nbButton disabled nbStepperNext>next</button>
+      </nb-step>
+    </nb-stepper>
+  </nb-card-body>
+</nb-card>

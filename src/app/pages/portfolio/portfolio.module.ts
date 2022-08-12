@@ -3,7 +3,7 @@ import {
   NbButtonModule,
   NbCardModule, NbDialogService,
   NbIconModule,
-  NbInputModule,
+  NbInputModule, NbStepperModule,
   NbTreeGridModule,
   NbWindowModule,
 } from '@nebular/theme';
@@ -14,6 +14,7 @@ import { FsIcon2Component } from './profile-management/portfolio-management.comp
 import {SyndicatorService} from '../../services/syndicator.service';
 import {APIService} from '../../services/api-service.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { PortfolioWizzardComponent } from './portfolio-wizzard/portfolio-wizzard.component';
 
 
 const COMPONENTS = [
@@ -27,6 +28,7 @@ const MODULES = [
   NbButtonModule,
   ReactiveFormsModule,
   FormsModule,
+  NbStepperModule,
 ];
 
 const SERVICES = [
@@ -51,6 +53,7 @@ const SERVICES = [
   declarations: [
     ...routedComponents,
     FsIcon2Component,
+    PortfolioWizzardComponent,
   ],
 })
 export class PortfolioModule { }

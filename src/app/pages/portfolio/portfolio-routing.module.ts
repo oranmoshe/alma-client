@@ -5,6 +5,7 @@ import { PortfolioManagementComponent } from './profile-management/portfolio-man
 import {
   WindowFormPortfolioComponent,
 } from './profile-management/window-form-add-portfolio/window-form-portfolio.component';
+import {PortfolioWizzardComponent} from './portfolio-wizzard/portfolio-wizzard.component';
 
 
 
@@ -16,6 +17,14 @@ const routes: Routes = [{
     {
       path: 'portfolio',
       component: PortfolioManagementComponent,
+    },
+    {
+      path: 'wizzard/:portfolioId',
+      component: PortfolioWizzardComponent,
+    },
+    {
+      path: 'wizzard',
+      component: PortfolioWizzardComponent,
     },
   ],
 }];
