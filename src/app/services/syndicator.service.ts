@@ -7,7 +7,7 @@ import {
   PORTFOLIO_CREATE,
   PORTFOLIO_DELETE,
   PORTFOLIO,
-  PORTFOLIO_UPDATE
+  PORTFOLIO_UPDATE, PORTFOLIO_UPLOAD, PORTFOLIO_DOWNLOAD, PORTFOLIO_DELETE_ATTACHMENT
 } from './api.endpoints.constants';
 import { map } from 'rxjs/operators';
 import {Syndicator} from '../classes/syndicator';
@@ -33,6 +33,7 @@ export class SyndicatorService {
               private globalErrorHandler: GlobalErrorHandler) {
     this.handleError = this.globalErrorHandler.handleError;
     this.syndicatorId = 1;
+    localStorage.setItem('syndicatorId', '1');
     this.fetchAndSetCurrentSyndicator(this.syndicatorId);
   }
 
@@ -40,9 +41,12 @@ export class SyndicatorService {
     return catchError((err, caught) => caught);
   }
 
+  public getSyndicatorId() {
+    return this.syndicatorId;
+  }
+
   public fetchAndSetCurrentSyndicator(syndicatorId: number) {
-    this.getSyndicatorById(syndicatorId)
-      .subscribe(syndicator => this.setCurrentSyndicator(syndicator));
+    this.getSyndicatorById(syndicatorId).subscribe(syndicator => this.setCurrentSyndicator(syndicator));
   }
 
   public getCurrentSyndicator() {
@@ -112,8 +116,44 @@ export class SyndicatorService {
       .pipe(this.handleError());
   }
 
-  updatePortfolio(syndicatorId: number, portfolio: Portfolio) {
-    return this.apiService.put(PORTFOLIO_UPDATE.replace(':syndicatorId', syndicatorId.toString()), portfolio)
+  updatePortfolio(syndicatorId: number, formData: FormData) {
+    return this.apiService.put(PORTFOLIO_UPDATE.replace(':syndicatorId', syndicatorId.toString()), formData)
+      .pipe(map((result) => {
+        return result;
+      }))
+      .pipe(this.handleError());
+  }
+
+  uploadFile(syndicatorId: Number, portfolioId: Number, files: File[]) {
+    const uploadData = new FormData(); // Create Form Data object to upload the file in POST FORM
+    for (let i in files) {
+      if (files[i] != null) {
+        uploadData.append('files', files[i]);
+      }
+    }
+    return this.apiService.postFile(PORTFOLIO_UPLOAD.replace(':syndicatorId', syndicatorId.toString())
+      .replace(':portfolioId', portfolioId.toString()), uploadData)
+      .pipe(map((result) => {
+        return result;
+      }))
+      .pipe(this.handleError());
+  }
+
+  downloadFile(syndicatorId: Number, portfolioId: Number,  attachmentId: Number) {
+    return this.apiService.getImage(PORTFOLIO_DOWNLOAD.replace(':syndicatorId', syndicatorId.toString())
+        .replace(':portfolioId', portfolioId.toString())
+        .replace(':attachmentId', attachmentId.toString()))
+      .pipe(map((result) => {
+        return result;
+      }))
+      .pipe(this.handleError());
+  }
+
+
+  removeFile(syndicatorId: number, portfolioId: Number,  attachmentId: Number) {
+    return this.apiService.delete(PORTFOLIO_DELETE_ATTACHMENT.replace(':syndicatorId', syndicatorId.toString())
+      .replace(':portfolioId', portfolioId.toString())
+      .replace(':attachmentId', attachmentId.toString()))
       .pipe(map((result) => {
         return result;
       }))

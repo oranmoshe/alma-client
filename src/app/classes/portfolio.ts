@@ -1,5 +1,6 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PortfolioInterface} from '../interfaces/portfolio-interface';
+import {UploadedFile} from './uploadedFile';
 
 export class Portfolio implements PortfolioInterface {
   id: Number;
@@ -10,11 +11,15 @@ export class Portfolio implements PortfolioInterface {
   creationDate: string;
   priority: string;
   status: string;
+  location: string;
+  uploadedFiles: UploadedFile[];
   form: FormGroup;
   constructor(portfolio?: Portfolio | PortfolioInterface) {
     if (portfolio) {
       Object.assign(this, portfolio);
     }
+    this.uploadedFiles = !this.uploadedFiles ? [] :
+      this.uploadedFiles.map(uploadedFile => new UploadedFile(uploadedFile));
     this.initForm();
   }
   initForm() {
@@ -28,7 +33,12 @@ export class Portfolio implements PortfolioInterface {
       creationDate: [this.creationDate || '', [Validators.required]],
       priority: [this.priority || '', [Validators.required]],
       status: [this.status || '', [Validators.required]],
+      location: [this.location || '', [Validators.required]],
     };
     this.form = formBuilder.group(formSettings);
+
+    const uploadedFilesFormArray = new FormArray(this.uploadedFiles.map(line => line.form));
+    this.form.addControl('uploadedFiles', uploadedFilesFormArray);
+
   }
 }

@@ -1,0 +1,31 @@
+:host ::ng-deep nb-stepper .step-content {
+  text-align: center;
+  width: 100%;
+  padding: 30px;
+  button {
+    cursor: pointer;
+    margin: 0.5rem;
+  }
+
+  form {
+    display: inline-block;
+    text-align: left;
+  }
+
+  label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    width: 150px;
+  }
+
+  .wizard-save-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  }
+
+  img {
+    width: 200px;
+  }
+
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {TableDataInterface, tableItemType} from '../interfaces/table-data';
@@ -12,16 +12,17 @@ export class APIService {
   constructor(private httpClient: HttpClient) {
   }
 
-  fetch(url: string, params = {}, cache?: boolean) {
+  fetch<T>(url: string, params = {}, cache?: boolean) {
     let headers;
     if (cache) {
       headers = new HttpHeaders().set('_Cache', 'true');
     }
-    return this.httpClient.get(apiUrl + url, { params: this.prepareEncodedParams(params), headers });
+    return this.httpClient.get<T>(apiUrl + url, { params: this.prepareEncodedParams(params), headers });
   }
 
   fetchPagination(url: string, pageSize: number, pageNumber: number,
-                  additionalParams = {}, cache?: boolean): Observable<TableDataInterface<tableItemType>> {
+                  additionalParams = {}, cache?: boolean):
+                        Observable<TableDataInterface<tableItemType>> {
     const copyAdditionalParams = JSON.parse(JSON.stringify(additionalParams));
     const params = Object.assign(copyAdditionalParams, {size: pageSize.toString(), page: pageNumber.toString()});
     return this.fetch(url, params, cache) as Observable<TableDataInterface<tableItemType>>;
@@ -29,6 +30,14 @@ export class APIService {
 
   post(url, body = null, params = {}, headers = {}) {
     return this.httpClient.post(apiUrl + url, body , {headers, params: this.prepareEncodedParams(params)});
+  }
+
+  postFile(url, formData: FormData) {
+    const req = new HttpRequest('POST', url, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+    return this.httpClient.request<any>(req);
   }
 
   // use when response extended data is necessary:
@@ -62,4 +71,9 @@ export class APIService {
 
     return result;
   }
+
+  getImage(imageUrl: string): Observable<Blob> {
+    return this.httpClient.get(imageUrl, { responseType: 'blob' });
+  }
+
 }
