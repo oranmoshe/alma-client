@@ -33,7 +33,7 @@ export class APIService {
   }
 
   postFile(url, formData: FormData) {
-    const req = new HttpRequest('POST', url, formData, {
+    const req = new HttpRequest('POST', apiUrl +url, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -73,7 +73,7 @@ export class APIService {
   }
 
   getImage(imageUrl: string): Observable<Blob> {
-    return this.httpClient.get(imageUrl, { responseType: 'blob' });
+    return this.httpClient.get(apiUrl + imageUrl, { responseType: 'blob' });
   }
 
 }
