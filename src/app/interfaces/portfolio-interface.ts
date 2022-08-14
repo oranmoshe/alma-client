@@ -7,4 +7,5 @@ export interface PortfolioInterface {
   creationDate: string;
   priority: string;
   status: string;
+  summary: string;
 }

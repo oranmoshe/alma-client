@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Portfolio} from '../../../classes/portfolio';
 import {SyndicatorService} from '../../../services/syndicator.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {EditorChangeContent, EditorChangeSelection} from 'ngx-quill';
 
 @Component({
   selector: 'ngx-portfolio-wizzard',
@@ -14,9 +15,12 @@ export class PortfolioWizzardComponent implements OnInit {
 
   public portfolio: Portfolio = new Portfolio();
   public id: Number;
+  // gallery
   files: File[] = new Array();
   images: Map<String, String> = new Map();
-
+  // quill
+  blured = false;
+  focused = false;
 
   constructor(private fb: FormBuilder,
               public syndicatorService: SyndicatorService,
@@ -34,6 +38,10 @@ export class PortfolioWizzardComponent implements OnInit {
 
   getUploadedFilesFormItem(index) {
     return (this.portfolio.form.controls['uploadedFiles'] as FormArray).controls[index].value;
+  }
+
+  getSummaryContent() {
+    return (this.portfolio.form.controls['summary']).value;
   }
 
   ngOnInit(): void {
@@ -110,22 +118,51 @@ export class PortfolioWizzardComponent implements OnInit {
     }
   }
 
-  // loadPictures(files: File[]) {
-  //   for (let i = 0; i < files.length; i++) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.images.push(reader.result as string);
-  //     }
-  //     reader.readAsDataURL(files[i]);
-  //   }
-  // }
+  delete(index: number) {
+    const uploadedFile =  this.getUploadedFilesFormItem(index);
+    const id = uploadedFile && uploadedFile.id || undefined;
+    if (id) {
+      this.syndicatorService.removeFile(this.syndicatorService.getSyndicatorId(), this.id, id)
+        .subscribe(res => {
+          delete this.images[id];
+          this.portfolio.uploadedFiles = this.portfolio.uploadedFiles.filter(f => f.id !== id);
+          this.portfolio = new Portfolio(this.portfolio);
+        });
+    }
+  }
 
-  delete(id: number) {
-    this.syndicatorService.removeFile(this.syndicatorService.getSyndicatorId(), this.id, id)
-      .subscribe(res => {
-        delete this.images[id];
-        this.portfolio.uploadedFiles = this.portfolio.uploadedFiles.filter(f => f.id !== id);
-        this.portfolio = new Portfolio(this.portfolio);
-      });
+  //
+  // Quill https://www.freakyjolly.com/angular-rich-text-editor-quill-with-image-resizer-emoji-mentions-tutorial/
+  //
+
+  created(event: any) {
+    // tslint:disable-next-line:no-console
+    console.log('editor-created', event);
+  }
+
+  timeout = undefined;
+  changedEditor(event: EditorChangeContent | EditorChangeSelection) {
+    // tslint:disable-next-line:no-console
+    console.log('editor-change', event);
+    if (event['html']) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout((function() {
+        this.portfolio.form.controls['summary'].setValue(event['html']);
+      }).bind(this), 1000);
+    }
+  }
+
+  focus($event: any) {
+    // tslint:disable-next-line:no-console
+    console.log('focus', $event);
+    this.focused = true;
+    this.blured = false;
+  }
+
+  blur($event: any) {
+    // tslint:disable-next-line:no-console
+    console.log('blur', $event);
+    this.focused = false;
+    this.blured = true;
   }
 }
