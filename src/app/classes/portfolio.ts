@@ -13,6 +13,7 @@ export class Portfolio implements PortfolioInterface {
   status: string;
   location: string;
   uploadedFiles: UploadedFile[];
+  summary: string;
   form: FormGroup;
   constructor(portfolio?: Portfolio | PortfolioInterface) {
     if (portfolio) {
@@ -34,6 +35,7 @@ export class Portfolio implements PortfolioInterface {
       priority: [this.priority || '', [Validators.required]],
       status: [this.status || '', [Validators.required]],
       location: [this.location || '', [Validators.required]],
+      summary: [this.summary || '', [Validators.required]],
     };
     this.form = formBuilder.group(formSettings);
 

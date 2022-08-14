@@ -15,6 +15,7 @@ import {SyndicatorService} from '../../services/syndicator.service';
 import {APIService} from '../../services/api-service.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { PortfolioWizzardComponent } from './portfolio-wizzard/portfolio-wizzard.component';
+import {QuillModule} from 'ngx-quill';
 
 
 const COMPONENTS = [
@@ -45,6 +46,7 @@ const SERVICES = [
     PortfolioRoutingModule,
     Ng2SmartTableModule,
     ...MODULES,
+    QuillModule,
   ],
   providers: [
     SyndicatorService,
