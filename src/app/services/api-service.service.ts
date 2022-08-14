@@ -33,7 +33,7 @@ export class APIService {
   }
 
   postFile(url, formData: FormData) {
-    const req = new HttpRequest('POST', apiUrl +url, formData, {
+    const req = new HttpRequest('POST', apiUrl + url, formData, {
       reportProgress: true,
       responseType: 'json'
     });
