@@ -40,8 +40,15 @@
         <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
       <nb-step label="Second step">
-        <h4>Step content #2</h4>
-
+        <h4>Gallery #2</h4>
+        <form class="form">
+          <input type="file"
+                 id="formFile"
+                 multiple
+                 (change)="handleFileInput($any($event).target.files)">
+          <button nbButton status="primary" (click)="onUpload()">upload</button>
+        </form>
+        <br>
         <form [formGroup]="portfolio.form">
           <ng-container formArrayName="uploadedFiles">
             <ng-container *ngFor="let uploadedForm of uploadedFilesForm.controls; let index = index">
@@ -51,20 +58,8 @@
               </div>
             </ng-container>
           </ng-container>
-          <button class="btn btn-primary">send</button>
         </form>
-
-        <form class="form">
-          <label for="formFile" class="form-label">Upload file example</label>
-          <input type="file"
-                   id="formFile"
-                   multiple
-                   (change)="handleFileInput($any($event).target.files)">
-          <button nbButton status="primary" (click)="onUpload()">upload</button>
-
-        </form>
-
-
+        <br><br><br><br><br>
         <button nbButton nbStepperPrevious>prev</button>
         <button nbButton nbStepperNext>next</button>
       </nb-step>
