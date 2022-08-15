@@ -76,7 +76,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'portfolio/portfolio',
       pathMatch: 'full',
     },
     {
