@@ -21,7 +21,7 @@
         </th>
         <td nbTreeGridCell *nbTreeGridCellDef="let row">
           <ngx-fs-icon [kind]="row.data.kind" [expanded]="row.expanded"></ngx-fs-icon>
-          {{row.data[customColumn]}}
+          <a (click)="goToPortfolioEdit(row.data['id'])">{{row.data[customColumn]}}</a>
         </td>
       </ng-container>
 

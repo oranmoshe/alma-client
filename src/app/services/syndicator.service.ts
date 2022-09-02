@@ -124,7 +124,7 @@ export class SyndicatorService {
       .pipe(this.handleError());
   }
 
-  uploadFile(syndicatorId: Number, portfolioId: Number, files: File[]) {
+  uploadFile(syndicatorId: Number, portfolioId: Number, files: File[], uploadType: string) {
     const uploadData = new FormData(); // Create Form Data object to upload the file in POST FORM
     for (let i in files) {
       if (files[i] != null) {
@@ -132,7 +132,9 @@ export class SyndicatorService {
       }
     }
     return this.apiService.postFile(PORTFOLIO_UPLOAD.replace(':syndicatorId', syndicatorId.toString())
-      .replace(':portfolioId', portfolioId.toString()), uploadData)
+      .replace(':portfolioId', portfolioId.toString())
+      .replace(':uploadType', uploadType)
+      , uploadData)
       .pipe(map((result) => {
         return result;
       }))

@@ -37,6 +37,7 @@
          </div>
         <button nbButton disabled nbStepperNext>prev</button>
         <button nbButton nbStepperNext (click)="onSubmitStep1()">next</button>
+        <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
         <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
       <nb-step label="Second step">
@@ -45,15 +46,15 @@
           <input type="file"
                  id="formFile"
                  multiple
-                 (change)="handleFileInput($any($event).target.files)">
-          <button nbButton status="primary" (click)="onUpload()">upload</button>
+                 (change)="handleFileInput($any($event).target.files, 'Gallery')">
+          <button nbButton status="primary" (click)="onUpload('Gallery')">upload</button>
         </form>
         <br>
         <form [formGroup]="portfolio.form">
           <ng-container formArrayName="uploadedFiles">
-            <ng-container *ngFor="let uploadedForm of uploadedFilesForm.controls; let index = index">
+            <ng-container *ngFor="let uploadedForm of this.filterUpload(uploadedFilesForm.controls, 'Gallery'); let index = index">
               <div [formGroupName]="index">
-                <button nbButton shape="round" size="small" (click)="delete(index)">delete</button>
+                <button nbButton shape="round" size="small" (click)="delete(index,'Gallery')">delete</button>
                 <img [src]="downloadFile(getUploadedFilesFormItem(index).id)">
               </div>
             </ng-container>
@@ -62,6 +63,8 @@
         <br><br><br><br><br>
         <button nbButton nbStepperPrevious>prev</button>
         <button nbButton nbStepperNext>next</button>
+        <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
+        <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
       <nb-step label="Third step">
         <h4>Summary #3</h4>
@@ -75,22 +78,33 @@
         </quill-editor>
         <button nbButton nbStepperPrevious>prev</button>
         <button nbButton nbStepperNext>next</button>
+        <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
+        <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
       <nb-step label="Fourth step">
-        <h4>Step content #4</h4>
-        <p class="lorem">
-          Proin varius accumsan semper. Praesent consequat tincidunt sagittis. Curabitur egestas sem a ipsum bibendum,
-          sit amet fringilla orci efficitur. Nam bibendum lectus ut viverra tristique. Fusce eu pulvinar magna, quis
-          viverra ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent metus turpis, commodo vel
-          placerat quis, lobortis in ligula.
-        </p>
-        <p class="lorem">
-          Curabitur luctus mattis risus nec condimentum. Donec at dui turpis. Sed vehicula fringilla rutrum. Nullam
-          sed ornare magna. Mauris vitae laoreet diam. Mauris fermentum ligula at lacinia semper. Nulla placerat dui
-          eu sapien pellentesque, eu placerat leo luctus. Cras pharetra blandit fermentum.
-        </p>
+        <h4>Documents #4</h4>
+        <form class="form">
+          <input type="file"
+                 id="formFile2"
+                 multiple
+                 (change)="handleFileInput($any($event).target.files, 'Document')">
+          <button nbButton status="primary" (click)="onUpload('Document')">upload</button>
+        </form>
+        <br>
+        <form [formGroup]="portfolio.form">
+          <ng-container formArrayName="uploadedFiles">
+            <ng-container *ngFor="let uploadedForm of this.filterUpload(uploadedFilesForm.controls, 'Document'); let index = index">
+              <div [formGroupName]="index">
+                <button nbButton shape="round" size="small" (click)="delete(index, 'Document')">delete</button>
+                {{uploadedForm.value.name}}
+              </div>
+            </ng-container>
+          </ng-container>
+        </form>
+        <br><br><br><br><br>
         <button nbButton nbStepperPrevious>prev</button>
-        <button nbButton disabled nbStepperNext>next</button>
+        <button nbButton nbStepperNext>next</button>
+        <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
       </nb-step>
     </nb-stepper>
   </nb-card-body>

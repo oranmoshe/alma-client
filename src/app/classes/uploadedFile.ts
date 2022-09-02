@@ -1,11 +1,11 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {UploadedFileInterface} from '../interfaces/uploadedFile-interface';
+import {UploadedFileInterface, UploadType} from '../interfaces/uploadedFile-interface';
 
 export class UploadedFile implements UploadedFileInterface {
   id: Number;
   name: string;
   path: string;
-  type: string;
+  uploadType: UploadType;
   form: FormGroup;
   constructor(uploadedFile?: UploadedFile | UploadedFileInterface) {
     if (uploadedFile) {
@@ -19,7 +19,7 @@ export class UploadedFile implements UploadedFileInterface {
       id: [this.id || '', []],
       name: [this.name || '', [Validators.required]],
       path: [this.path || '', [Validators.required]],
-      type: [this.type || '', [Validators.required]],
+      uploadType: [this.uploadType || '', [Validators.required]],
     };
     this.form = formBuilder.group(formSettings);
   }

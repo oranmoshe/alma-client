@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Portfolio} from '../../../classes/portfolio';
 import {SyndicatorService} from '../../../services/syndicator.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -17,6 +17,7 @@ export class PortfolioWizzardComponent implements OnInit {
   public id: Number;
   // gallery
   files: File[] = new Array();
+  docs: File[] = new Array();
   images: Map<String, String> = new Map();
   // quill
   blured = false;
@@ -75,18 +76,32 @@ export class PortfolioWizzardComponent implements OnInit {
     }
   }
 
-  handleFileInput(files: FileList) {
+  handleFileInput(files: FileList, uploadType: string) {
     for (let i = 0; i < files.length; i++) {
-      this.files.push(files[i]);
+      switch (uploadType) {
+        case 'Gallery': {
+          this.files.push(files[i]);
+          break;
+        }
+        case 'Document': {
+          this.docs.push(files[i]);
+          break;
+        }
+      }
     }
   }
 
-  onUpload() {
-    this.syndicatorService.uploadFile(this.syndicatorService.getSyndicatorId(), this.id, this.files)
+  onUpload(uploadType: string) {
+    this.syndicatorService.uploadFile(this.syndicatorService.getSyndicatorId(), this.id,
+      uploadType === 'Gallery' ? this.files : this.docs, uploadType)
       .subscribe(res => {
         const portfolio = res['body'];
         if (portfolio) {
-          this.files = [];
+          if (uploadType === 'Gallery') {
+            this.files = [];
+          } else {
+            this.docs = [];
+          }
           this.portfolio = new Portfolio(portfolio);
           this.portfolio.form.updateValueAndValidity();
         }
@@ -118,13 +133,16 @@ export class PortfolioWizzardComponent implements OnInit {
     }
   }
 
-  delete(index: number) {
+  delete(index: number, uploadType: string) {
     const uploadedFile =  this.getUploadedFilesFormItem(index);
     const id = uploadedFile && uploadedFile.id || undefined;
     if (id) {
       this.syndicatorService.removeFile(this.syndicatorService.getSyndicatorId(), this.id, id)
         .subscribe(res => {
-          delete this.images[id];
+          if (uploadType === 'Gallery')
+            delete this.images[id];
+         // if (uploadType === 'Gallery')
+           // delete this.images[id];
           this.portfolio.uploadedFiles = this.portfolio.uploadedFiles.filter(f => f.id !== id);
           this.portfolio = new Portfolio(this.portfolio);
         });
@@ -164,5 +182,13 @@ export class PortfolioWizzardComponent implements OnInit {
     console.log('blur', $event);
     this.focused = false;
     this.blured = true;
+  }
+
+  filterUpload(controls: AbstractControl[], uploadType: string) {
+    return controls.filter(d => d.value.uploadType === uploadType);
+  }
+
+  onPreview() {
+    console.log('preview');
   }
 }
