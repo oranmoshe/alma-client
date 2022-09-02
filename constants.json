@@ -8,7 +8,7 @@
     "PORTFOLIO_CREATE": "/api/syndicators/:syndicatorId/portfolio",
     "PORTFOLIO_DELETE": "/api/syndicators/:syndicatorId/portfolio/:portfolioId",
     "PORTFOLIO_UPDATE": "/api/syndicators/:syndicatorId/portfolio",
-    "PORTFOLIO_UPLOAD": "/api/syndicators/:syndicatorId/portfolio/:portfolioId/attachment",
+    "PORTFOLIO_UPLOAD": "/api/syndicators/:syndicatorId/portfolio/:portfolioId/attachment/:uploadType",
     "PORTFOLIO_DOWNLOAD": "/api/syndicators/:syndicatorId/portfolio/:portfolioId/attachment/:attachmentId",
     "PORTFOLIO_DELETE_ATTACHMENT": "/api/syndicators/:syndicatorId/portfolio/:portfolioId/attachment/:attachmentId"
   },
