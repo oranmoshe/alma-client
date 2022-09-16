@@ -104,13 +104,14 @@ export class PortfolioWizzardComponent implements OnInit {
     this.syndicatorService.uploadFile(this.syndicatorService.getSyndicatorId(), this.id,
       uploadType === 'Gallery' ? this.files : this.docs, uploadType)
       .subscribe(res => {
-        this.ngxService.stop();
         const portfolio = res['body'];
         if (portfolio) {
           if (uploadType === 'Gallery') {
             this.files = [];
+            this.ngxService.stop();
           } else {
             this.docs = [];
+            this.ngxService.stop();
           }
           this.portfolio = new Portfolio(portfolio);
           this.portfolio.form.updateValueAndValidity();
