@@ -6,15 +6,25 @@ import {ActivatedRoute} from '@angular/router';
 import {EditorChangeContent, EditorChangeSelection} from 'ngx-quill';
 import {UploadType} from '../../../interfaces/uploadedFile-interface';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {CanComponentDeactivate} from '../../../services/can-deactivate-guard.service';
 
 @Component({
   selector: 'ngx-portfolio-wizzard',
   templateUrl: './portfolio-wizzard.component.html',
   styleUrls: ['./portfolio-wizzard.component.scss'],
 })
-export class PortfolioWizzardComponent implements OnInit {
+export class PortfolioWizzardComponent implements OnInit, CanComponentDeactivate {
 
-
+  canDeactivate(): Observable<boolean> | boolean {
+    if (this.unSaved) {
+      const result = window.confirm('There are unsaved changes! Are you sure?');
+      return result;
+    }
+    return true;
+  }
+  unSaved: boolean = false;
   public portfolio: Portfolio = new Portfolio();
   public id: Number;
   // gallery
@@ -28,6 +38,7 @@ export class PortfolioWizzardComponent implements OnInit {
   constructor(private fb: FormBuilder,
               public syndicatorService: SyndicatorService,
               private route: ActivatedRoute,
+              private router: Router,
               private ngxService: NgxUiLoaderService) {
     this.route.params.subscribe( params => this.id = params['portfolioId'] );
   }
@@ -57,6 +68,7 @@ export class PortfolioWizzardComponent implements OnInit {
       this.syndicatorService.getPortfolio(this.syndicatorService.getSyndicatorId(), +this.id)
         .subscribe((portfolio: Portfolio) => {
           this.portfolio = new Portfolio(portfolio);
+          this.portfolio.form.statusChanges.subscribe(change => this.unSaved = change);
           this.portfolio.uploadedFiles
             .filter(u => u.uploadType === UploadType.Gallery)
             .forEach((f, i) => {
@@ -65,6 +77,7 @@ export class PortfolioWizzardComponent implements OnInit {
         });
     } else {
       this.portfolio = new Portfolio();
+      this.portfolio.form.statusChanges.subscribe(change => this.unSaved = change);
     }
   }
 
@@ -210,5 +223,9 @@ export class PortfolioWizzardComponent implements OnInit {
 
   onPreview() {
     console.log('preview');
+  }
+
+  onCancel() {
+    this.router.navigate(['/portfolio/portfolio']);
   }
 }

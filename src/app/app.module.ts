@@ -20,6 +20,7 @@ import {
   NbToastrModule,
   NbWindowModule,
 } from '@nebular/theme';
+import {CanDeactivateGuard} from './services/can-deactivate-guard.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,6 +40,9 @@ import {
     }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
+  ],
+  providers: [
+    CanDeactivateGuard,
   ],
   bootstrap: [AppComponent],
 })

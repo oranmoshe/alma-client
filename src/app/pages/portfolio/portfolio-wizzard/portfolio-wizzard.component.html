@@ -37,6 +37,7 @@
          </div>
         <button nbButton disabled nbStepperNext>prev</button>
         <button nbButton nbStepperNext (click)="onSubmitStep1()">next</button>
+        <button nbButton class="wizard-cancel-btn" status="basic" (click)="onCancel()">Cancel</button>
         <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
         <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
@@ -63,6 +64,7 @@
         <br><br><br><br><br>
         <button nbButton nbStepperPrevious>prev</button>
         <button nbButton nbStepperNext>next</button>
+        <button nbButton class="wizard-cancel-btn" status="basic" (click)="onCancel()">Cancel</button>
         <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
         <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
@@ -78,6 +80,7 @@
         </quill-editor>
         <button nbButton nbStepperPrevious>prev</button>
         <button nbButton nbStepperNext>next</button>
+        <button nbButton class="wizard-cancel-btn" status="basic" (click)="onCancel()">Cancel</button>
         <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
         <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
@@ -103,8 +106,9 @@
         </form>
         <br><br><br><br><br>
         <button nbButton nbStepperPrevious>prev</button>
-        <button nbButton nbStepperNext>next</button>
+        <button nbButton class="wizard-cancel-btn" status="basic" (click)="onCancel()">Cancel</button>
         <button nbButton class="wizard-preview-btn" status="basic" (click)="onPreview()">Preview</button>
+        <button nbButton class="wizard-save-btn" status="primary" (click)="onSubmitStep1()">Save</button>
       </nb-step>
     </nb-stepper>
   </nb-card-body>

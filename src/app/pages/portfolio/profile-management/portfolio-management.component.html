@@ -51,7 +51,7 @@
     <div *ngIf="showType=='grid'">
       <div class="row show-grid">
         <div class="col-md-3" *ngFor="let item of  getPortfolioList()">
-          <div class="portfolio-gallery-item">
+          <div class="portfolio-gallery-item" (click)="goToPortfolioEdit(item.id+'')">
             <div class="portfolio-gallery-item-image"></div>
             <div class="portfolio-gallery-item-info">
               <h2>
