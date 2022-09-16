@@ -4,7 +4,8 @@ import {Portfolio} from '../../../classes/portfolio';
 import {SyndicatorService} from '../../../services/syndicator.service';
 import {ActivatedRoute} from '@angular/router';
 import {EditorChangeContent, EditorChangeSelection} from 'ngx-quill';
-import {UploadType} from "../../../interfaces/uploadedFile-interface";
+import {UploadType} from '../../../interfaces/uploadedFile-interface';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
 
 @Component({
   selector: 'ngx-portfolio-wizzard',
@@ -26,7 +27,8 @@ export class PortfolioWizzardComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               public syndicatorService: SyndicatorService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private ngxService: NgxUiLoaderService) {
     this.route.params.subscribe( params => this.id = params['portfolioId'] );
   }
 
@@ -98,9 +100,11 @@ export class PortfolioWizzardComponent implements OnInit {
   }
 
   onUpload(uploadType: string) {
+    this.ngxService.start();
     this.syndicatorService.uploadFile(this.syndicatorService.getSyndicatorId(), this.id,
       uploadType === 'Gallery' ? this.files : this.docs, uploadType)
       .subscribe(res => {
+        this.ngxService.stop();
         const portfolio = res['body'];
         if (portfolio) {
           if (uploadType === 'Gallery') {

@@ -16,6 +16,7 @@ import {APIService} from '../../services/api-service.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { PortfolioWizzardComponent } from './portfolio-wizzard/portfolio-wizzard.component';
 import {QuillModule} from 'ngx-quill';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
 
 
 const COMPONENTS = [
@@ -30,6 +31,7 @@ const MODULES = [
   ReactiveFormsModule,
   FormsModule,
   NbStepperModule,
+  NgxUiLoaderModule,
 ];
 
 const SERVICES = [
