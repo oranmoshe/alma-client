@@ -55,7 +55,7 @@
             <ng-container *ngFor="let uploadedForm of this.filterUpload(uploadedFilesForm.controls, 'Gallery'); let index = index">
               <div [formGroupName]="index">
                 <button nbButton shape="round" size="small" (click)="delete(index,'Gallery')">delete</button>
-                <img [src]="downloadFile(getUploadedFilesFormItem(index).id)">
+                <img *ngIf="getCachedImage(uploadedForm.value.id)" [src]="getCachedImage(uploadedForm.value.id)">
               </div>
             </ng-container>
           </ng-container>
