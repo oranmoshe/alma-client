@@ -82,10 +82,13 @@ export class PortfolioWizzardComponent implements OnInit, CanComponentDeactivate
   }
 
   onSubmitStep1() {
+    this.ngxService.start();
     if (this.portfolio.id) {
       // existing portfolio
       this.syndicatorService.updatePortfolio(this.syndicatorService.getSyndicatorId(), this.portfolio.form.value)
         .subscribe(res => {
+          this.ngxService.stop();
+          this.router.navigate(['/portfolio/portfolio']);
         });
     } else {
       // new portfolio
@@ -93,6 +96,8 @@ export class PortfolioWizzardComponent implements OnInit, CanComponentDeactivate
       this.syndicatorService.createPortfolio(this.syndicatorService.getSyndicatorId(), this.portfolio.form.value)
         .subscribe((res: Portfolio) => {
           this.id = res.id;
+          this.ngxService.stop();
+          this.router.navigate(['/portfolio/portfolio']);
         });
     }
   }
