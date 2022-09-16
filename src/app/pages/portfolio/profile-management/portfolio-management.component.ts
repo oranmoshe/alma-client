@@ -55,7 +55,7 @@ export class PortfolioManagementComponent implements OnInit, OnDestroy {
   public pageIndex: number = 0;
   public pageSize: number = 10;
   private searchSubscription: Subscription;
-  public showType: string = 'list';
+  public showType: string = 'grid';
   private syndicatorId: number = 1;
   private handleError: Function;
 

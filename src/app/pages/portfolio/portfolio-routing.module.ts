@@ -6,6 +6,7 @@ import {
   WindowFormPortfolioComponent,
 } from './profile-management/window-form-add-portfolio/window-form-portfolio.component';
 import {PortfolioWizzardComponent} from './portfolio-wizzard/portfolio-wizzard.component';
+import {CanDeactivateGuard} from '../../services/can-deactivate-guard.service';
 
 
 
@@ -21,10 +22,12 @@ const routes: Routes = [{
     {
       path: 'wizzard/:portfolioId',
       component: PortfolioWizzardComponent,
+      canDeactivate: [CanDeactivateGuard],
     },
     {
       path: 'wizzard',
       component: PortfolioWizzardComponent,
+      canDeactivate: [CanDeactivateGuard],
     },
   ],
 }];
