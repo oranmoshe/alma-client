@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormArray, FormBuilder} from '@angular/forms';
 import {Portfolio} from '../../../classes/portfolio';
 import {SyndicatorService} from '../../../services/syndicator.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {EditorChangeContent, EditorChangeSelection} from 'ngx-quill';
+import {UploadType} from "../../../interfaces/uploadedFile-interface";
 
 @Component({
   selector: 'ngx-portfolio-wizzard',
@@ -54,6 +55,11 @@ export class PortfolioWizzardComponent implements OnInit {
       this.syndicatorService.getPortfolio(this.syndicatorService.getSyndicatorId(), +this.id)
         .subscribe((portfolio: Portfolio) => {
           this.portfolio = new Portfolio(portfolio);
+          this.portfolio.uploadedFiles
+            .filter(u => u.uploadType === UploadType.Gallery)
+            .forEach((f, i) => {
+              this.downloadFile(f.id);
+            });
         });
     } else {
       this.portfolio = new Portfolio();
@@ -104,6 +110,11 @@ export class PortfolioWizzardComponent implements OnInit {
           }
           this.portfolio = new Portfolio(portfolio);
           this.portfolio.form.updateValueAndValidity();
+          this.portfolio.uploadedFiles
+            .filter(u => !this.images[u.id + ''])
+            .forEach(u => {
+              this.downloadFile(u.id);
+            });
         }
         // if (res['total'] && res['loaded'] && res['total'] === res['loaded'])
         //   this.loadPictures(this.files)
@@ -121,6 +132,10 @@ export class PortfolioWizzardComponent implements OnInit {
     } else {
       return this.images[id];
     }
+  }
+
+  getCachedImage(id) {
+    return this.images[id];
   }
 
   createImageFromBlob(image: Blob, id: number) {
