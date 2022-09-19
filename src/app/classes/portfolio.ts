@@ -34,7 +34,7 @@ export class Portfolio implements PortfolioInterface {
       creationDate: [this.creationDate || '', [Validators.required]],
       priority: [this.priority || '', [Validators.required]],
       status: [this.status || '', [Validators.required]],
-      // location: [this.location || '', [Validators.required]],
+      location: [this.location || '', []],
       summary: [this.summary || '', [Validators.required]],
     };
     this.form = formBuilder.group(formSettings);
