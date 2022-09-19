@@ -81,14 +81,20 @@ export class PortfolioWizzardComponent implements OnInit, CanComponentDeactivate
     }
   }
 
+  onSave(exit?: boolean) {
+    this.onSubmitStep1();
+    if (exit) {
+      this.router.navigate(['/portfolio/portfolio']);
+    }
+  }
+
   onSubmitStep1() {
     this.ngxService.start();
     if (this.portfolio.id) {
       // existing portfolio
       this.syndicatorService.updatePortfolio(this.syndicatorService.getSyndicatorId(), this.portfolio.form.value)
         .subscribe(res => {
-          this.ngxService.stop();
-          this.router.navigate(['/portfolio/portfolio']);
+          this.doneSave();
         });
     } else {
       // new portfolio
@@ -96,10 +102,14 @@ export class PortfolioWizzardComponent implements OnInit, CanComponentDeactivate
       this.syndicatorService.createPortfolio(this.syndicatorService.getSyndicatorId(), this.portfolio.form.value)
         .subscribe((res: Portfolio) => {
           this.id = res.id;
-          this.ngxService.stop();
-          this.router.navigate(['/portfolio/portfolio']);
+          this.doneSave();
         });
     }
+  }
+
+  doneSave() {
+    this.ngxService.stop();
+    this.unSaved = false;
   }
 
   handleFileInput(files: FileList, uploadType: string) {
@@ -136,7 +146,9 @@ export class PortfolioWizzardComponent implements OnInit, CanComponentDeactivate
           this.portfolio.uploadedFiles
             .filter(u => !this.images[u.id + ''])
             .forEach(u => {
-              this.downloadFile(u.id);
+              if (uploadType === 'Gallery') {
+                this.downloadFile(u.id);
+              }
             });
         }
         // if (res['total'] && res['loaded'] && res['total'] === res['loaded'])
